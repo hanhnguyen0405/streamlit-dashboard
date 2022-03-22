@@ -32,9 +32,11 @@ unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 st.markdown('# Screener')
 
 is_rendered = False
+clicked = st.button('Refresh')
 
-if not is_rendered or st.button('Refresh'):
+if not is_rendered or clicked:
     st.empty()
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
     st.dataframe(get_data(filtered_sheet), 1600, 800)
+    is_rendered = True
     
