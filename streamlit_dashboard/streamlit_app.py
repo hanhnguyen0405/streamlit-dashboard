@@ -70,7 +70,7 @@ zipcode_clicked = st.button('Apply zipcode selection')
 
 if not st.session_state['is_rendered'] or refresh_clicked:
     refresh_page()
-    st_state.is_rendered = True
+    st.session_state['is_rendered'] = True
 
 if zipcode_clicked:
     update_page()
