@@ -4,7 +4,7 @@ from gsheetsdb import connect
 import pandas as pd
 import datetime
 
-pd.set_option('display.max_colwidth', -1)
+# pd.set_option('display.max_colwidth', -1)
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
