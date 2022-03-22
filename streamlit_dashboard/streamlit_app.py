@@ -30,7 +30,7 @@ unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 
 
 # ---- Page rendering ----
-_zipcode_list = None
+_zipcode_list = []
 df = None
 
 
