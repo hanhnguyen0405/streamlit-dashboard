@@ -27,12 +27,14 @@ def get_data(sheet_url):
 filtered_sheet = st.secrets["private_gsheets_url_filtered"]
 unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 
+# ---- The actual table rendering part ----
+
 st.markdown('# Screener')
 
-# ---- The actual table rendering part ----
 is_rendered = False
 
 if not is_rendered or st.button('Refresh'):
     st.empty()
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
-    st.dataframe(get_data(filtered_sheet))
+    st.dataframe(get_data(filtered_sheet), 400, 200)
+    
