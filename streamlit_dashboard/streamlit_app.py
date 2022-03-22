@@ -46,7 +46,7 @@ if not is_rendered or clicked:
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
 
     df = get_data(filtered_sheet)
-    df['url'] = df['url'].apply(make_clickable)
+    # df['url'] = df['url'].apply(make_clickable)
     # df = df.to_html(escape=False)
     # st.write(df, unsafe_allow_html=True)
 
