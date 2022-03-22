@@ -36,5 +36,5 @@ is_rendered = False
 if not is_rendered or st.button('Refresh'):
     st.empty()
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
-    st.dataframe(get_data(filtered_sheet), 400, 200)
+    st.dataframe(get_data(filtered_sheet), 1200, 800)
     
