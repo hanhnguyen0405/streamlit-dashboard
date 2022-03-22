@@ -3,6 +3,7 @@ from google.oauth2 import service_account
 from gsheetsdb import connect
 import pandas as pd
 import datetime
+import st_state_patch
 
 
 # Create a connection object.
