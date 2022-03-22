@@ -32,6 +32,7 @@ unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 # ---- Page rendering ----
 _zipcode_list = []
 df = None
+selected_zipcodes = []
 
 
 def refresh_page():
@@ -43,7 +44,6 @@ def refresh_page():
     _zipcode_list = list(set(df.zipcode))
 
     selected_zipcodes = st.multiselect('Select zipcode(s)', _zipcode_list)
-    zipcode_clicked = st.button('Apply zipcode selection')
 
     st.dataframe(df, 2000, 800)
 
@@ -57,7 +57,6 @@ def update_page(selected_zipcodes):
 
     st.empty()
     selected_zipcodes = st.multiselect('Select zipcode(s)', _zipcode_list)
-    zipcode_clicked = st.button('Apply zipcode selection')
 
     st.dataframe(updated_df, 2000, 800)
 
@@ -68,6 +67,7 @@ st.markdown('# Screener')
 
 is_rendered = False
 refresh_clicked = st.button('Refresh')
+zipcode_clicked = st.button('Apply zipcode selection')
 
 if not is_rendered or refresh_clicked:
     refresh_page()
