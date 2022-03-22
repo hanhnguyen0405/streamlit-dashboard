@@ -1,3 +1,2 @@
 streamlit
 gsheetsdb
-git+https://github.com/kmcgrady/streamlit-autorefresh.git

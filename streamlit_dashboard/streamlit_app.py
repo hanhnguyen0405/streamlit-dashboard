@@ -2,7 +2,7 @@ import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
 import pandas as pd
-from streamlit_autorefresh import st_autorefresh
+import datetime
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
@@ -27,7 +27,12 @@ def get_data(sheet_url):
 filtered_sheet = st.secrets["private_gsheets_url_filtered"]
 unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 
-# update every 5 mins
-st_autorefresh(interval=5 * 60 * 1000, key="dataframerefresh")
+st.markdown('# Screener')
+st.markdown(f'## Last refreshed: {datetime.datetime.now()}')
 
-st.dataframe(get_data(filtered_sheet))
+# ---- The actual table rendering part ----
+is_rendered = False
+
+if not is_rendered or st.button('Refresh'):
+    st.empty()
+    st.dataframe(get_data(filtered_sheet))
