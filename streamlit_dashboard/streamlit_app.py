@@ -50,7 +50,7 @@ def refresh_page():
 def update_page(selected_zipcodes):
     global df
     if selected_zipcodes:
-        updated_df = df[~df.zipcode.apply(lambda x: x in st.session_state['selected_zipcodes'])]
+        updated_df = df[df.zipcode.apply(lambda x: x in st.session_state['selected_zipcodes'])]
     else:
         updated_df = df
 
