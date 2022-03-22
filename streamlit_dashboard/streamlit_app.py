@@ -47,10 +47,9 @@ if not is_rendered or clicked:
 
     df = get_data(filtered_sheet)
     df['url'] = df['url'].apply(make_clickable)
-    
     # df = df.to_html(escape=False)
     # st.write(df, unsafe_allow_html=True)
 
-    st.dataframe(df.style.pipe(make_pretty), 2000, 800)
+    st.dataframe(df, 2000, 800)
     is_rendered = True
     
