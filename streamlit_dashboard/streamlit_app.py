@@ -39,6 +39,20 @@ clicked = st.button('Refresh')
 if not is_rendered or clicked:
     st.empty()
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
-    st.dataframe(get_data(filtered_sheet), 2000, 800)
+
+    df = get_data(filtered_sheet)
+    df['url'] = df['url'].apply(make_clickable)
+    
+    df = df.to_html(escape=False)
+    st.write(df, unsafe_allow_html=True)
+
+    # st.dataframe(df, 2000, 800)
     is_rendered = True
     
+
+# ---- HELPERS ----
+def make_clickable(link):
+    # target _blank to open new window
+    # extract clickable text to display for your link
+    text = link.split('=')[1]
+    return f'<a target="_blank" href="{link}">{text}</a>'
