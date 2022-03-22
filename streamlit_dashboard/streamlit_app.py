@@ -3,7 +3,6 @@ from google.oauth2 import service_account
 from gsheetsdb import connect
 import pandas as pd
 import datetime
-import st_state_patch
 
 
 # Create a connection object.
@@ -31,20 +30,19 @@ unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 
 
 # ---- Page rendering ----
-st_state = st.State()
-st_state.zipcode_list = []
-st_state.df = None
-st_state.selected_zipcodes = []
+st.session_state['zipcode_list'] = []
+df = None
+st.session_state['selected_zipcodes'] = []
 
 
 def refresh_page():
     st.empty()
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
 
-    st_state.df = get_data(filtered_sheet)
-    st_state.zipcode_list = list(set(df.zipcode))
+    df = get_data(filtered_sheet)
+    st.session_state['zipcode_list'] = list(set(df.zipcode))
 
-    selected_zipcodes = st.multiselect('Select zipcode(s)', st_state.zipcode_list)
+    st.session_state['selected_zipcodes'] = st.multiselect('Select zipcode(s)', st.session_state['zipcode_list'])
 
     st.dataframe(df, 2000, 800)
 
@@ -52,12 +50,12 @@ def refresh_page():
 def update_page(selected_zipcodes):
     global df
     if selected_zipcodes:
-        updated_df = df[~df.zipcode.apply(lambda x: x in selected_zipcodes)]
+        updated_df = df[~df.zipcode.apply(lambda x: x in st.session_state['selected_zipcodes'])]
     else:
         updated_df = df
 
     st.empty()
-    selected_zipcodes = st.multiselect('Select zipcode(s)', _zipcode_list)
+    st.session_state['selected_zipcodes'] = st.multiselect('Select zipcode(s)', st.session_state['zipcode_list'])
 
     st.dataframe(updated_df, 2000, 800)
 
@@ -66,11 +64,11 @@ def update_page(selected_zipcodes):
 
 st.markdown('# Screener')
 
-st_state.is_rendered = False
+st.session_state['is_rendered'] = False
 refresh_clicked = st.button('Refresh')
 zipcode_clicked = st.button('Apply zipcode selection')
 
-if not is_rendered or refresh_clicked:
+if not st.session_state['is_rendered'] or refresh_clicked:
     refresh_page()
     st_state.is_rendered = True
 
