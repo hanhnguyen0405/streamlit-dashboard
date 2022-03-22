@@ -25,6 +25,12 @@ def get_data(sheet_url):
     df = pd.DataFrame(rows)
     return df
 
+def make_clickable(link):
+    # target _blank to open new window
+    # extract clickable text to display for your link
+    text = link.split('=')[1]
+    return f'<a target="_blank" href="{link}">{text}</a>'
+
 
 filtered_sheet = st.secrets["private_gsheets_url_filtered"]
 unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
@@ -49,10 +55,3 @@ if not is_rendered or clicked:
     # st.dataframe(df, 2000, 800)
     is_rendered = True
     
-
-# ---- HELPERS ----
-def make_clickable(link):
-    # target _blank to open new window
-    # extract clickable text to display for your link
-    text = link.split('=')[1]
-    return f'<a target="_blank" href="{link}">{text}</a>'
