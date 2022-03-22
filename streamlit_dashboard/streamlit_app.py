@@ -28,8 +28,7 @@ def get_data(sheet_url):
 def make_clickable(link):
     # target _blank to open new window
     # extract clickable text to display for your link
-    text = link.split('=')[1]
-    return f'<a target="_blank" href="{link}">{text}</a>'
+    return f'<a target="_blank" href="{link}">link</a>'
 
 
 filtered_sheet = st.secrets["private_gsheets_url_filtered"]
