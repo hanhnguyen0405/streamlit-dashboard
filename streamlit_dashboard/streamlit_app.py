@@ -46,8 +46,7 @@ def refresh_page():
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
     st.session_state['selected_zipcodes'] = st.multiselect('Select zipcode(s)',
-             st.session_state['zipcode_list'], key=uuid.uuid4())
-
+            st.session_state['zipcode_list'])
     st.dataframe(df, 2000, 800)
 
 
@@ -59,9 +58,6 @@ def update_page():
         updated_df = df
 
     st.empty()
-    st.session_state['selected_zipcodes'] = st.multiselect('Select zipcode(s)',
-             st.session_state['zipcode_list'], key=uuid.uuid4())
-
     st.dataframe(updated_df, 2000, 800)
 
         
@@ -71,6 +67,7 @@ st.markdown('# Screener')
 
 st.session_state['is_rendered'] = False
 refresh_clicked = st.button('Refresh')
+
 zipcode_clicked = st.button('Apply zipcode selection')
 
 if not st.session_state['is_rendered'] or refresh_clicked:
