@@ -1,6 +1,8 @@
 import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
+import pandas as pd
+from streamlit_autorefresh import st_autorefresh
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
@@ -15,15 +17,17 @@ conn = connect(credentials=credentials)
 
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache(ttl=600)
-def run_query(query):
+def get_data(sheet_url):
+    query = f'SELECT * FROM "{sheet_url}"'
     rows = conn.execute(query, headers=1)
-    return rows
+    df = pd.DataFrame(rows)
+    return df
 
 
-sheet_url = st.secrets["private_gsheets_url"]
-rows = run_query(f'SELECT * FROM "{sheet_url}"')
+filtered_sheet = st.secrets["private_gsheets_url_filtered"]
+unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 
-# Print results.
-for row in rows:
-    st.write(f"{row.name} - {row.total_roi}:")
+# update every 5 mins
+st_autorefresh(interval=5 * 60 * 1000, key="dataframerefresh")
+
+st.dataframe(get_data(filtered_sheet))
