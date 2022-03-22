@@ -41,6 +41,7 @@ def refresh_page():
     st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
 
     global df
+    print('Query new data from Google Sheet')
     df = get_data(filtered_sheet)
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
