@@ -73,5 +73,5 @@ if not st.session_state['is_rendered'] or refresh_clicked:
     st.session_state['is_rendered'] = True
 
 if zipcode_clicked:
-    update_page()
+    update_page(st.session_state['selected_zipcodes'])
     
