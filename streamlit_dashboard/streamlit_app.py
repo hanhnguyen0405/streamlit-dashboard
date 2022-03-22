@@ -42,6 +42,9 @@ def refresh_page():
     df = get_data(filtered_sheet)
     _zipcode_list = list(set(df.zipcode))
 
+    selected_zipcodes = st.multiselect('Select zipcode(s)', _zipcode_list)
+    zipcode_clicked = st.button('Apply zipcode selection')
+
     st.dataframe(df, 2000, 800)
 
 
@@ -49,9 +52,14 @@ def update_page(selected_zipcodes):
     global df
     if selected_zipcodes:
         updated_df = df[~df.zipcode.apply(lambda x: x in selected_zipcodes)]
-        st.dataframe(updated_df, 2000, 800)
     else:
-        st.dataframe(df, 2000, 800)
+        updated_df = df
+
+    st.empty()
+    selected_zipcodes = st.multiselect('Select zipcode(s)', _zipcode_list)
+    zipcode_clicked = st.button('Apply zipcode selection')
+
+    st.dataframe(updated_df, 2000, 800)
 
         
 # ---- The actual table rendering part ----
@@ -60,9 +68,6 @@ st.markdown('# Screener')
 
 is_rendered = False
 refresh_clicked = st.button('Refresh')
-
-selected_zipcodes = st.multiselect('Select zipcode(s)', _zipcode_list)
-zipcode_clicked = st.button('Apply zipcode selection')
 
 if not is_rendered or refresh_clicked:
     refresh_page()
