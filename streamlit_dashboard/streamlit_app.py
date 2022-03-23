@@ -26,6 +26,13 @@ def get_data(sheet_url):
     return df
 
 
+def infer_type(x):
+    try:
+        return x.astype(float)
+    except ValueError:
+        return x.astype(str)
+
+
 filtered_sheet = st.secrets["private_gsheets_url_filtered"]
 unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
 
@@ -40,6 +47,7 @@ def refresh_page():
     global df
     print('Query new data from Google Sheet')
     df = get_data(filtered_sheet)
+    df = df.apply(infer_type)
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
     st.session_state['df_container'] = st.empty()
