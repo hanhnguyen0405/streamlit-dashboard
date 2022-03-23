@@ -43,7 +43,7 @@ def refresh_page():
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
     st.session_state['df_container'] = st.empty()
-    st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
+    st.session_state['df_container'].markdown(f'#### Last refreshed: {datetime.datetime.now()}')
     st.session_state['selected_zipcodes'] = st.session_state['df_container'].multiselect('Select zipcode(s)',
             st.session_state['zipcode_list'])
     st.session_state['df_container'].dataframe(df, 2000, 800)
