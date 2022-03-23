@@ -43,10 +43,11 @@ def refresh_page():
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
     st.session_state['df_container'] = st.empty()
-    st.session_state['df_container'].markdown(f'#### Last refreshed: {datetime.datetime.now()}')
-    st.session_state['selected_zipcodes'] = st.session_state['df_container'].multiselect('Select zipcode(s)',
-            st.session_state['zipcode_list'])
-    st.session_state['df_container'].dataframe(df, 2000, 800)
+    with st.session_state['df_container'].container():
+        st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
+        st.session_state['selected_zipcodes'] = st.multiselect('Select zipcode(s)',
+                st.session_state['zipcode_list'])
+        st.dataframe(df, 2000, 800)
 
 
 def update_page():
@@ -57,7 +58,8 @@ def update_page():
         updated_df = df
 
     st.session_state['df_container'].empty()
-    st.session_state['df_container'].dataframe(updated_df, 2000, 800)
+    with st.session_state['df_container'].container():
+        st.dataframe(updated_df, 2000, 800)
 
         
 # ---- The actual table rendering part ----
@@ -66,7 +68,6 @@ st.markdown('# Screener')
 
 st.session_state['is_rendered'] = False
 refresh_clicked = st.button('Refresh')
-
 zipcode_clicked = st.button('Apply zipcode selection')
 
 if not st.session_state['is_rendered'] or refresh_clicked:
