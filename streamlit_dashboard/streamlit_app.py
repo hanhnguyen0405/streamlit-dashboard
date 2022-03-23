@@ -28,7 +28,7 @@ def get_data(sheet_url):
 
 def infer_type(x):
     try:
-        return x.astype(float)
+        return x.astype(float) if '.' in x.iloc[0] else x.astype(int)
     except ValueError:
         return x.astype(str)
 
