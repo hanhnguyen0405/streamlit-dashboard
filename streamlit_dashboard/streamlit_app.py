@@ -23,6 +23,10 @@ def get_data(sheet_url):
     query = f'SELECT * FROM "{sheet_url}"'
     rows = conn.execute(query, headers=1)
     df = pd.DataFrame(rows)
+
+    df = df.apply(infer_type)
+    df.rename(columns=lambda c: c.replace('_', ' ').title(), inplace=True)
+
     return df
 
 
@@ -47,7 +51,7 @@ def refresh_page():
     global df
     print('Query new data from Google Sheet')
     df = get_data(filtered_sheet)
-    df = df.apply(infer_type)
+
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
     st.session_state['df_container'] = st.empty()
