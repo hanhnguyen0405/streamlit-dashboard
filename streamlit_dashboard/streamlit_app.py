@@ -37,17 +37,16 @@ st.session_state['selected_zipcodes'] = []
 
 
 def refresh_page():
-    st.empty()
-    st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
-
     global df
     print('Query new data from Google Sheet')
     df = get_data(filtered_sheet)
     st.session_state['zipcode_list'] = list(set(df.zipcode))
 
-    st.session_state['selected_zipcodes'] = st.multiselect('Select zipcode(s)',
+    st.session_state['df_container'] = st.empty()
+    st.markdown(f'#### Last refreshed: {datetime.datetime.now()}')
+    st.session_state['selected_zipcodes'] = st.session_state['df_container'].multiselect('Select zipcode(s)',
             st.session_state['zipcode_list'])
-    st.dataframe(df, 2000, 800)
+    st.session_state['df_container'].dataframe(df, 2000, 800)
 
 
 def update_page():
@@ -57,8 +56,8 @@ def update_page():
     else:
         updated_df = df
 
-    st.empty()
-    st.dataframe(updated_df, 2000, 800)
+    st.session_state['df_container'].empty()
+    st.session_state['df_container'].dataframe(updated_df, 2000, 800)
 
         
 # ---- The actual table rendering part ----
