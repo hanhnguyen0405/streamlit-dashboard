@@ -17,6 +17,17 @@ credentials = service_account.Credentials.from_service_account_info(
 conn = connect(credentials=credentials)
 
 
+def infer_type(x):
+    try:
+        return x.astype(float) if '.' in x.iloc[0] else x.astype(int)
+    except ValueError:
+        return x.astype(str)
+
+
+filtered_sheet = st.secrets["private_gsheets_url_filtered"]
+unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
+
+
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
 def get_data(sheet_url):
@@ -30,17 +41,6 @@ def get_data(sheet_url):
     return df
 
 
-def infer_type(x):
-    try:
-        return x.astype(float) if '.' in x.iloc[0] else x.astype(int)
-    except ValueError:
-        return x.astype(str)
-
-
-filtered_sheet = st.secrets["private_gsheets_url_filtered"]
-unfiltered_sheet = st.secrets["private_gsheets_url_unfiltered"]
-
-
 # ---- Page rendering ----
 st.session_state['zipcode_list'] = []
 df = None
@@ -51,8 +51,6 @@ def refresh_page():
     global df
     print('Query new data from Google Sheet')
     df = get_data(filtered_sheet)
-
-    st.session_state['zipcode_list'] = list(set(df.zipcode))
 
     st.session_state['df_container'] = st.empty()
     with st.session_state['df_container'].container():
